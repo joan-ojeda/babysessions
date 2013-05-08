@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<title>Say it to me!</title>
+<style>
+
+</style>
+<h1>Say it to me!</h1>
+<form id="form-tts">
+	<input value="Hola juan que tal estás" id="text-tts">
+	<button id="say-button">Voz</button>
+</form>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script>
+var audioTagSupport = !!(document.createElement('audio').canPlayType);
+$('#form-tts').submit(function(){
+	if (!audioTagSupport) return false;
+	var text = $.trim($('#text-tts').val());
+	if (text == '') return false;
+	var audio = document.createElement('audio');
+	audio.setAttribute('src', 'http://translate.google.com/translate_tts?tl=es&q=' + encodeURIComponent(text));
+	audio.load();
+	audio.play();
+	return false;
+});
+</script>
+
+<audio id="speech" src="http://translate.google.com/translate_tts?tl=es&q=hello" >Your browser does not support the audio element.</audio>

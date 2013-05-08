@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Baby sessions</title>
+	<meta name="author" content="Joan Ojeda" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+			
+</head>
+<body>
+
+<div id="pagina" data-role="page">
+
+<div id="content" data-role="content">
+    
+	<ul id="lista" data-role="listview"> </ul>       
+	
+	
+</div>
+</div>
+
+<script type="text/javascript">
+function getTitols(json){
+	var posts = json['response']['posts'];
+	var sessions = '';
+	for (var i in posts){
+		p = posts[i];
+		//alert(p.date);
+		//alert(p.title);
+		sessions=p.body;
+	}
+	sessions=sessions.replace("<ul>","");
+	sessions=sessions.replace("</ul>","");
+	alert(sessions);
+	$('#lista').append(sessions);
+	$("#lista").listview("refresh");
+	//			$("#lista").listview();
+		
+
+		//$('#lista').listview();
+		//$('#lista').listview('refresh');
+}
+</script>
+
+<script type="text/javascript">
+$('document').ready(function () {
+	$.ajax({
+		url: 'http://api.tumblr.com/v2/blog/babysessions.tumblr.com/posts',
+		method: 'get',
+		data : ({ 
+				api_key :'XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx', jsonp : 'getTitols', tag:'sessions' 
+			}),
+		dataType: "jsonp",
+		complete: function() {
+				//$("#container").trigger("create");
+				//$('#lista').listview();
+				//$('#lista').listview('refresh');
+				//$('#lista').trigger('create');
+					
+						//$("#lista").listview("refresh");
+//						$("#lista").listview();
+					
+			}
+	});
+});
+
+</script>
+<!--<script type="text/javascript" src="http://api.tumblr.com/v2/blog/babysessions.tumblr.com/posts?api_key=XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx&amp;jsonp=getTitols&amp;tag=sessions"></script>
+<script type="text/javascript" src="http://api.tumblr.com/v2/blog/joanojeda.tumblr.com/posts/photo?api_key=XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx&amp;jsonp=getPhotos;limit=10"></script>
+-->
+
+</body>
+</html>

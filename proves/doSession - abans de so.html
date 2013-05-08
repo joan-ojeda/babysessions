@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="author" content="Joan Ojeda Duran - PFC" />
+	
+	<title>Baby Sessions</title>
+			
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="jquery_url.js"></script>
+	<script type="text/javascript" src="klass.min.js"></script>
+	<script type="text/javascript" src="code.photoswipe-3.0.5.js"></script>
+	
+	<link href="photoswipe.css" type="text/css" rel="stylesheet" />
+	
+</head>
+<body>
+
+
+<script type="text/javascript">
+var images = [];
+function getImages(json) {
+  
+  var fotos = [];
+  var posts = json['response']['posts'];
+  //alert("getimages:"+posts.length);
+  for (i = 0; i < posts.length; i++) {
+    fotos       = posts[i]['photos'][0]['alt_sizes'];
+	f_url     	= fotos[0]['url'];
+	f_w      	= fotos[0]['width'];
+	f_h      	= fotos[0]['height'];
+	f_caption   = posts[i]['caption'];
+	f_audio 	= "textoaudio";
+	
+	f_caption=f_caption.replace("<p>","");
+	f_caption=f_caption.replace("</p>","");
+	
+	images.push({ url: f_url, caption: f_caption, audio: f_audio});
+  }
+    
+}
+</script>
+
+<script type="text/javascript">
+setTimeout(function(){
+(function(window, Util, PhotoSwipe, $){
+
+	$('document').ready(function () {
+		var	options = {
+						getImageMetaData: function(obj){
+							return obj.audio;
+						},
+						preventHide: false,
+						
+						enableKeyboard:false,
+						enableMouseWheel:false,
+						loop:true,
+						slideshowDelay:2000,
+						margin:20,
+						allowUserZoom:false,
+						jQueryMobile:true,
+						backButtonHideEnabled:true,
+						captionAndToolbarHide:false,
+						captionAndToolbarFlipPosition:true,
+						captionAndToolbarAutoHideDelay:0,
+						captionAndToolbarOpacity:1,
+						getImageSource: function(obj){
+							return obj.url;
+						},
+						getImageCaption: function(obj){
+							return obj.caption;
+						},
+						getToolbar: function(){
+							return '<div class="ps-toolbar-tornar" style="padding-top: 12px;">Tornar</div>';
+						}
+					};
+					
+					var instance = PhotoSwipe.attach( images, options );
+					
+					// onShow - store a reference to our "Audio" button
+					var	doTornar;
+					instance.addEventHandler(PhotoSwipe.EventTypes.onShow, function(e){
+						doTornar = window.document.querySelectorAll('.ps-toolbar-tornar')[0];
+					});
+					
+					// onToolbarTap - listen out for when the toolbar is tapped
+					instance.addEventHandler(PhotoSwipe.EventTypes.onToolbarTap, function(e){
+						if (e.toolbarAction === PhotoSwipe.Toolbar.ToolbarAction.none){
+							if (e.tapTarget === doTornar || Util.DOM.isChildOf(e.tapTarget, doTornar)){
+								document.location="index.html";
+							}
+						}
+					});
+					
+					instance.addEventHandler(PhotoSwipe.EventTypes.onTouch, function(e){
+						if (e.action === 'tap'){
+							var currentImage = instance.getCurrentImage();
+							alert(currentImage.refObj.audio);
+							playTTS(currentImage.refObj.audio);
+						}
+					});
+					//alert("show");
+					instance.show(0);
+	});
+	
+	}(window, window.Code.Util, window.Code.PhotoSwipe, jQuery));
+},1000);
+</script>
+
+<script type="text/javascript">
+
+	var s = $.getURLParam("s");
+	s=s.replace('#','');
+	var u="http://api.tumblr.com/v2/blog/"+s+".tumblr.com/posts";
+
+	$.ajax({
+		url: u,
+		method: 'get',
+		data : ({ 
+				api_key:'XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx', type:'photo'
+			}),
+		dataType: "jsonp",
+		jsonpCallback: "getImages",
+		complete: function() { },
+		error: function() { alert("error");}
+	});
+</script>
+<script type="text/javascript">
+function playTTS(txt){
+	alert(txt);
+//http://translate.google.com/translate_tts?tl=en&q="hello world"
+}
+
+
+</script>
+
+</body>
+</html>

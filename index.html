@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="author" content="Joan Ojeda Duran - PFC" />
+	
+	<title>Baby Sessions</title>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>			
+	
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+			
+</head>
+<body>
+
+<!-- page sessions -->
+
+<div data-role="page" data-theme="d" page-title="Baby Sesssions - Sessions">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Baby Sessions</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">  
+	
+		<ul id="sessions" data-role="listview" data-inset="true" data-theme="c"></ul>
+
+	</div><!-- /content -->
+
+	
+	<div data-role="footer" id="peu" class="ui-bar" data-position="fixed" data-theme="b">
+		
+		<a href="index.html" data-icon="home" data-ajax="false" >&nbsp;</a>
+		<a href="doPares.html" data-icon="info" data-ajax="false" >Pares</a>
+		<a href="doEines.html" data-icon="gear" data-ajax="false" >Eines</a>
+		<a href="doMes.html" data-icon="plus" data-ajax="false" >Més</a>
+		<!--<a href="doVideo.html" data-icon="plus" data-ajax="false" >Video</a>-->
+		
+	</div><!-- /footer -->
+	
+	<script type="text/javascript">
+	//$('#peu').load('footer.html')
+	//$('#peu').append('footer.html')
+	</script>
+	
+</div><!-- /page -->
+
+
+<script type="text/javascript">
+
+function getSessions(json){
+	var posts = json['response']['posts'];
+	var sessions = ''
+	for (var i in posts){
+		p = posts[i];
+		sessions=p.body;
+	}
+	
+	sessions=sessions.replace("<ul>","");
+	sessions=sessions.replace("</ul>","");
+	sessions=sessions.replace("<p>","");
+	sessions=sessions.replace("</p>","");
+	sessions=replaceAll(sessions,"http://","");
+	
+	$('#sessions').append(sessions);
+	$('#sessions').listview('refresh');
+}
+
+function replaceAll(text,busca,reemplaza){
+  while (text.toString().indexOf(busca) != -1)
+      text = text.toString().replace(busca,reemplaza);
+	return text;
+}
+
+</script>
+
+<script type="text/javascript">
+$('document').ready(function () {
+	$.ajax({
+		url: 'http://api.tumblr.com/v2/blog/babysessions.tumblr.com/posts',
+		method: 'get',
+		data : ({ 
+				api_key :'XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx', jsonp : 'getSessions', tag:'sessions' 
+			}),
+		dataType: "jsonp",
+		cache :false,
+		complete: function() {			//alert("complete");
+					}
+	});
+	
+});	
+</script>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40757476-1']);
+  _gaq.push(['_setDomainName','none']);
+  _gaq.push(['_setAllowLinker',true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

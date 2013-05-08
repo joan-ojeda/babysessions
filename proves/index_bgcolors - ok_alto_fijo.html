@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<title>Baby sessions</title>
+	<meta name="author" content="Joan Ojeda Duran - PFC" />
+	
+	<link href="photoswipe.css" type="text/css" rel="stylesheet" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+	
+	
+	<script type="text/javascript" src="klass.min.js"></script>
+	<script type="text/javascript" src="code.photoswipe-3.0.5.js"></script>
+	
+	
+
+
+
+	
+			
+</head>
+<body>
+
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Baby Sessions</h1>
+	</div><!-- /header -->
+	
+	
+	
+	<div id="PhotoSwipeTarget"></div>
+	
+	
+
+	<div data-role="footer" class="ui-bar" data-position="fixed" data-theme="b">
+		<a href="index.html" data-icon="home" rel="external">Fitxes</a>
+		<a href="pares.html" data-icon="info" rel="external">Pares</a>
+		<a href="eines.html" data-icon="gear" rel="external">Eines</a>
+		<a href="mes.html" data-icon="plus" rel="external">Més</a>
+	</div><!-- /footer -->
+	
+</div><!-- /page -->
+
+<script type="text/javascript">
+
+var images = [];
+function getImages(json) {
+  
+  var fotos = [];
+  var posts = json['response']['posts'];
+  for (i = 0; i < posts.length; i++) {
+    fotos       = posts[i]['photos'][0]['alt_sizes'];
+	f_url     	= fotos[0]['url'];
+	f_w      	= fotos[0]['width'];
+	f_h      	= fotos[0]['height'];
+	f_caption   = posts[i]['caption'];
+	
+	images.push({ url: f_url, caption: f_caption });
+  }
+  
+ 	(function(window, Util, PhotoSwipe){
+			
+			Util.Events.domReady(function(e){
+			
+				var	options = {
+							preventHide: false,
+							enableKeyboard:false,
+							enableMouseWheel:false,
+							loop:true,
+							slideshowDelay:2000,
+							margin:20,
+							allowUserZoom:false,
+							jQueryMobile:true,
+							backButtonHideEnabled:false,
+							captionAndToolbarFlipPosition:true,
+							captionAndToolbarAutoHideDelay:0,
+							captionAndToolbarOpacity:1,
+							target: window.document.querySelectorAll('#PhotoSwipeTarget')[0],
+							getImageSource: function(obj){
+								return obj.url;
+							},
+							getImageCaption: function(obj){
+								return obj.caption;
+							}
+
+					};
+					
+					var instance = PhotoSwipe.attach( images, options );
+					instance.show(0);
+					
+			} );
+			
+			
+		}(window, window.Code.Util, window.Code.PhotoSwipe));
+
+}  
+</script>
+
+<script type="text/javascript" src="http://api.tumblr.com/v2/blog/bscolors.tumblr.com/posts?api_key=XdsfPCwtsTQUTbvWOUfdTGKnryYZ3jtz3U0lZpQtC3ELwIRgFx&jsonp=getImages&type=photo"></script>
+
+</body>
+</html>
