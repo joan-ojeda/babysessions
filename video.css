@@ -1,0 +1,39 @@
+#videosession{ 
+	/** Per defecte **/
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	
+	/*height: 100%; width: 100%; background-color: red;*/
+	/*width : 1024px;*/
+	/*height : 480px;*/
+}
+
+@media only screen and (max-device-width: 480px) {
+ /* For mobile Iphone / Android */
+	
+	#videosession{ 
+		width : 380px;
+		height : 200px;
+	}
+}
+
+@media only screen and (max-device-width: 768px) {
+  /* For general iPad layouts */
+	#videosession{ 
+		width : 668px;
+		height : 500px;
+	}
+
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  /* For portrait layouts only */
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  /* For landscape layouts only */
+}
+	
+
+

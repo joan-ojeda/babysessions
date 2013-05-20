@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="author" content="Joan Ojeda Duran - PFC" />
+	
+	<title>Baby Sessions</title>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>			
+	<script type="text/javascript" src="bs.js"></script>
+
+	<script type="text/javascript">
+
+	var s = $.getURLParam("url");
+	s=s.replace('#','=');
+	
+	var sfinal= "http://"+s;
+	document.location=sfinal;
+	
+	</script>
+			
+</head>
+<body bgcolor="black">
+
+</body>
+</html>
